@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joy in Pixels</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #fef3e8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+            transition: background 1s;
+        }
+        h1 {
+            color: #f97316;
+            font-size: 28px;
+            text-shadow: 1px 1px #fed7aa;
+        }
+        #input-section {
+            margin-bottom: 25px;
+        }
+        #moment-input {
+            padding: 12px;
+            width: 240px;
+            border: 2px dashed #fb923c;
+            border-radius: 10px;
+            background: #fff7ed;
+        }
+        button {
+            padding: 10px 25px;
+            margin: 5px;
+            background: #f97316;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+        }
+        button:hover {
+            background: #ea580c;
+        }
+        #jar-container {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300"><rect x="50" y="100" width="100" height="200" fill="none" stroke="%23fed7aa" stroke-width="4" rx="20"/><path d="M50 100 Q100 50 150 100" fill="none" stroke="%23fed7aa" stroke-width="4"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        .memory-square {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            left: 60px;
+            top: 0;
+            text-align: center;
+            font-size: 12px;
+            color: #9a3412;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fed7aa;
+            border-radius: 5px;
+            background: radial-gradient(circle, hsl(20, 90%, 85%), hsl(40, 80%, 70%));
+            animation: foldIntoJar 1s ease-out forwards;
+        }
+        @keyframes foldIntoJar {
+            0% { transform: scale(1) rotate(0deg); top: 0; opacity: 1; }
+            50% { transform: scale(0.5) rotate(45deg); top: 150px; }
+            100% { transform: scale(0.2) rotate(90deg); top: 250px; opacity: 0; }
+        }
+        .spin {
+            animation: spinWheel 2s ease-out forwards;
+            box-shadow: 0 0 10px #fb923c; /* Glow effect */
+        }
+        @keyframes spinWheel {
+            0% { transform: rotate(0deg); top: 100px; opacity: 1; }
+            80% { transform: rotate(720deg); top: 100px; opacity: 1; }
+            100% { transform: rotate(720deg); top: 100px; opacity: 0; }
+        }
+        #replay-message {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #9a3412;
+            padding: 10px;
+            background: #fff7ed;
+            border: 2px solid #fed7aa;
+            border-radius: 5px;
+            max-width: 300px;
+            text-align: center;
+            transition: opacity 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <h1>Joy in Pixels</h1>
+    <div id="input-section">
+        <input type="text" id="moment-input" placeholder="Type a happy moment">
+        <button onclick="addMoment()">Add Moment</button>
+        <button onclick="replayMoment()">Memory Replay</button>
+        <button onclick="wheelSpin()">Wheel Spin</button>
+        <button onclick="clearMoments()">Clear All</button>
+    </div>
+    <div id="jar-container"></div>
+    <div id="replay-message"></div>
+
+    <script>
+        const jarContainer = document.getElementById('jar-container');
+        const momentInput = document.getElementById('moment-input');
+        const replayMessage = document.getElementById('replay-message');
+        let moments = JSON.parse(localStorage.getItem('joyMoments')) || [];
+        const wheelPrompts = [
+            "Name something that made you *Proud* today",
+            "What got you *Excited* recently?",
+            "What felt *Peaceful* this week?",
+            "What are you *Grateful* for right now?",
+            "What gave you *Hope* lately?",
+            "What made you *Joyful* today?"
+        ];
+
+        updateBackground();
+
+        function addMoment() {
+            const text = momentInput.value.trim();
+            if (text) {
+                moments.push(text);
+                localStorage.setItem('joyMoments', JSON.stringify(moments));
+                drawMemorySquare(text);
+                updateBackground();
+                momentInput.value = '';
+            }
+        }
+
+        function drawMemorySquare(text) {
+            const square = document.createElement('div');
+            square.className = 'memory-square';
+            square.textContent = text.substring(0, 20);
+            jarContainer.appendChild(square);
+            setTimeout(() => square.remove(), 1000);
+        }
+
+        function replayMoment() {
+            if (moments.length > 0) {
+                const randomIndex = Math.floor(Math.random() * moments.length);
+                replayMessage.textContent = `Joy: "${moments[randomIndex]}"`;
+                replayMessage.style.opacity = 1;
+                setTimeout(() => replayMessage.style.opacity = 0, 5000);
+            } else {
+                replayMessage.textContent = 'No joys yet!';
+                setTimeout(() => replayMessage.style.opacity = 0, 2000);
+            }
+        }
+
+        function wheelSpin() {
+            const randomPrompt = wheelPrompts[Math.floor(Math.random() * wheelPrompts.length)];
+            const tempSquare = document.createElement('div');
+            tempSquare.className = 'memory-square spin';
+            tempSquare.textContent = 'Spinning...';
+            jarContainer.appendChild(tempSquare);
+            setTimeout(() => {
+                tempSquare.remove();
+                replayMessage.textContent = randomPrompt;
+                replayMessage.style.opacity = 1;
+                const response = prompt(randomPrompt);
+                if (response && response.trim()) {
+                    moments.push(response.trim());
+                    localStorage.setItem('joyMoments', JSON.stringify(moments));
+                    drawMemorySquare(response.trim());
+                    updateBackground();
+                }
+                setTimeout(() => replayMessage.style.opacity = 0, 5000); // Prompt stays 5s
+            }, 2000);
+        }
+
+        function clearMoments() {
+            moments = [];
+            localStorage.setItem('joyMoments', JSON.stringify(moments));
+            jarContainer.innerHTML = '';
+            document.body.style.background = '#fef3e8';
+            replayMessage.textContent = 'Fresh start!';
+            setTimeout(() => replayMessage.style.opacity = 0, 1000);
+        }
+
+        function updateBackground() {
+            const brightness = Math.min(moments.length * 3, 30);
+            document.body.style.background = `hsl(20, 50%, ${95 - brightness}%)`;
+        }
+    </script>
+</body>
+</html>
