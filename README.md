@@ -1,5 +1,5 @@
 # Joy in Pixels
-A web app for logging and replaying happy moments, built for a nursing class. Users add joyful memories, watch them animate into a virtual jar, and spin a wheel for reflective prompts.
+A web app for logging and replaying happy moments. Users add joyful memories, watch them animate into a virtual jar, and spin a wheel for reflective prompts.
 
 ## Features
 - Add moments with a cozy UI.
