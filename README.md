@@ -9,13 +9,11 @@ A web app for logging and replaying happy moments. Users add joyful memories, wa
 
 ## Tech
 - HTML, CSS, JavaScript
-- Client-side only, no backend
+
 
 ## Demo
 
-
 https://github.com/user-attachments/assets/7ff49305-99f8-424f-9df6-6badfa52ec95
-
 
 
 ## Setup
