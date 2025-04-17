@@ -14,6 +14,14 @@ A web app for logging and replaying happy moments, built for a nursing class. Us
 ## Demo
 
 
+https://github.com/user-attachments/assets/7ff49305-99f8-424f-9df6-6badfa52ec95
+
+
+
 ## Setup
-1. Clone repo: `git clone https://github.com/YourUsername/joy-in-pixels.git`
-2. Open `index.html` in a browser.
+1. Clone repo: `git clone https://github.com/dave22r/joy-in-pixels.git`
+2. Open `joyinpixels.html` in a browser.
+
+
+
+
