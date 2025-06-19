@@ -13,7 +13,7 @@ A web app for logging and replaying happy moments. Users add joyful memories, wa
 
 ## Demo
 
-https://github.com/user-attachments/assets/7ff49305-99f8-424f-9df6-6badfa52ec95
+https://youtu.be/3Tri6Hqhk90
 
 
 ## Setup
